@@ -31,6 +31,8 @@ Generator for a modern JS package written in Typescript, ready to be published t
 - (Optional) Yarn
 
 
+Requires Node `>=8.10.0`.
+
 ### Installation
 
 ```
@@ -45,6 +47,7 @@ create-ts-package new-package
 ctpkg new-package
 ```
 
+If you provide no options, `create-ts-package` will then
 
 ### Contributing
 
