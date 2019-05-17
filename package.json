@@ -1,0 +1,44 @@
+{
+  "name": "create-ts-package",
+  "version": "1.0.0",
+  "description": "Setup a modern Typescript package with one command",
+  "keywords": [
+    "cli",
+    "generator",
+    "boilerplate",
+    "typescript",
+    "command",
+    "project-generator"
+  ],
+  "main": "bin/index.js",
+  "bin": {
+    "create-ts-package": "bin/index.js",
+    "ctpkg": "bin/index.js"
+  },
+  "scripts": {
+    "run": "npm run build && npm run bin/index.js",
+    "build": "rm -rf ./bin/ && tsc"
+  },
+  "dependencies": {
+    "update-notifier": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^12.0.2",
+    "@types/update-notifier": "^2.5.0",
+    "ts-node": "^8.1.0",
+    "typescript": "^3.4.5"
+  },
+  "engines": {
+    "node": ">=8.10.0"
+  },
+  "author": {
+    "name": "himynameisdave",
+    "email": "d@velunny.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/himynameisdave/create-ts-package/issues"
+  },
+  "homepage": "https://github.com/himynameisdave/create-ts-package#readme",
+  "preferGlobal": true
+}
