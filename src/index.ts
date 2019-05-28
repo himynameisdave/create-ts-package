@@ -1,44 +1,47 @@
 #!/usr/bin/env ts-node
 
-import * as fs from 'fs';
-import program from 'commander';
-import updateNotifier from 'update-notifier';
-// import execa from 'execa';
+require('./modules/check-update');
+import chalk from 'chalk';
 import Listr from 'listr';
+import program from './program';
+import getDirTask from './modules/dir';
+import getName from './modules/name';
+import { copyTemplate, MustacheView } from './modules/template'
 
 
-const pkg = require('../package.json');
+const BASE_FILES = [
+    'package.json',
+    // 'rollup.config.ts',
+    // 'README.md',
+    // 'tsconfig.json',
+    // '.babelrc',
+    // '.gitignore',
+    // 'LICENSE',
+];
 
-// Update if newer version exists
-updateNotifier({ pkg }).notify();
+(async function() {
+    try {
+        //  Collect config info
+        const name: string = await getName(program.args[0]);
 
-program
-    .version(pkg.version, '-v, --version')
-    .usage('<module-name> [options] ')
-    .option('-e, --no-eslint', `Don't include ESLint`)
-    .option('-t, --no-travis', `Don't include TravisCI`)
-    .option('-c, --no-coveralls', `Don't include Coveralls`)
-    .option('-j, --no-jest', `Don't include Jest`)
-    .parse(process.argv);
+        const config: MustacheView = {
+            name,
+            description: 'Old macdonald on tha farm eyeyayayayah o'
+        };
 
-const file = program.args[0];
+        //  Setup & run the tasks
+        const tasks = new Listr([
+            getDirTask(name),
+            ...BASE_FILES.map(file => copyTemplate(name, file, config))
+        ])
+        await tasks.run();
 
+        //  Say goodbye
+        console.log(`\n  ✨ Boom, ${name} is now a real thing! Time to start building...`);
+        process.exit(0);
 
-const tasks = new Listr([
-    {
-        title: 'Checking Credentials',
-        task: () => new Promise(res => {
-            setTimeout(res, 2000)
-        });
-    },
-    {
-        title: 'Calling cops',
-        task: () => new Promise(res => {
-            setTimeout(res, 1000)
-        });
+    } catch(err) {
+        console.error('\n  🔥 Something has gone horribly wrong.\n', err);
+        process.exit(1);
     }
-])
-
-tasks.run().catch(err => {
-    console.error(err);
-});
+})();

@@ -8,6 +8,9 @@ yarn-error.log*
 # macos stuff
 *.DS_Store
 
+# Testing the script
+test/
+
 # Coverage directory used by tools like istanbul
 coverage
 
